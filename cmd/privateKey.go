@@ -15,6 +15,7 @@ var privateKeyCmd = &cobra.Command{
 
 func init() {
 	privateKeyCmd.Flags().StringP("out", "o", "", "specify the output path of the private key")
+    privateKeyCmd.Flags().StringP("passphrase", "p", "", "specify the passphrase to encrypt the private key")
 
 	if err := privateKeyCmd.MarkFlagRequired("out"); err != nil {
 		logger.Error("cert-go", err.Error())
@@ -25,6 +26,12 @@ func init() {
 
 func createPrivateKey(cmd *cobra.Command, args []string, passphrase string) {
 	outputPath, err := cmd.Flags().GetString("out")
+	if err != nil {
+		logger.Error("cert-go", err.Error())
+		return
+	}
+
+	passphrase, err := cmd.Flags().GetString("out")
 	if err != nil {
 		logger.Error("cert-go", err.Error())
 		return
